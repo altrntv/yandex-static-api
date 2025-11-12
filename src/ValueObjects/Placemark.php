@@ -10,8 +10,7 @@ use Stringable;
 class Placemark implements Stringable
 {
     public function __construct(
-        public float           $longitude,
-        public float           $latitude,
+        public Point           $point,
         public ?PlacemarkStyle $style = null,
         public ?PlacemarkColor $color = null,
         public ?PlacemarkSize  $size = null,
@@ -28,7 +27,7 @@ class Placemark implements Stringable
 
     public function __toString(): string
     {
-        $value = "{$this->longitude},{$this->latitude},"
+        $value = "{$this->point},"
             . $this->style?->value
             . $this->color?->value
             . $this->size?->value

@@ -1,5 +1,9 @@
 # Yandex Static API for Laravel
 
+![Packagist Version](https://img.shields.io/packagist/v/altrntv/yandex-static-api?style=flat-square&label=release)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/altrntv/yandex-static-api/test.yml?branch=main&style=flat-square&label=test)
+![Packagist Downloads](https://img.shields.io/packagist/dt/altrntv/yandex-static-api?style=flat-square)
+
 A simple and fluent PHP client for working with
 the [Yandex Static Maps API](https://yandex.com/maps-api/products/static-api), built for Laravel. Generate static map
 images with points, figures, zoom levels, and themes — all via a fluent, expressive interface.
@@ -62,8 +66,7 @@ $image = StaticApi::make($point)
     ->mapType(MapType::Map)
     ->placemarks([
         new Placemark(
-            longitude: 32.810152,
-            latitude: 39.889847,
+            point: new Point(longitude: 32.810152, latitude: 39.889847),
             style: PlacemarkStyle::Pm,
             color: PlacemarkColor::Pink,
             size: PlacemarkSize::Large,
@@ -72,28 +75,28 @@ $image = StaticApi::make($point)
     ])
     ->scale(1)
     ->size(new Size(width: 650, height: 450))
-    ->span(10, 10)
+    ->span(10)
     ->theme(Theme::Light)
     ->zoom(10)
-    ->sendRequest();
+    ->fetch();
 ```
 
 ## Supported Parameters
 
-| Parameter     | Description                                                                                          | Example                                                                                                                                                |
-|---------------|------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `point`       | Longitude and latitude of the map center in degrees.                                                 | `new Point(longitude: 32.810152, latitude: 39.889847)`                                                                                                 |
-| `boundingBox` | Alternative method for setting the map viewport. Defined as lower-left and upper-right coordinates.  | `new BoundingBox(new Point(...), new Point(...))`                                                                                                      |
-| `span`        | Range of the map viewport by longitude and latitude (in degrees).                                    | `->span(10)`                                                                                                                                           |
-| `zoom`        | Map zoom level (0–21).                                                                               | `->zoom(10)`                                                                                                                                           |
-| `size`        | Height and width of the requested map image (in pixels).                                             | `new Size(width: 650, height: 450)`                                                                                                                    |
-| `scale`       | Coefficient for scaling map objects. Fractional values from 1.0 to 4.0.                              | `->scale(1)`                                                                                                                                           |
-| `placemarks`  | Definitions of one or more markers, including coordinates, style, color, size, and optional content. | `[new Placemark(longitude: 32.81, latitude: 39.88, style: PlacemarkStyle::Pm, color: PlacemarkColor::Pink, size: PlacemarkSize::Large, content: 100)]` |
-| `figures`     | Geometric figures (polylines and polygons) with coordinates, line color/thickness, and fill color.   | `[new Line(coordinates: [...], lineColor: '00FF00A0', lineWidth: 1, borderColor: '00FF00A0', borderWidth: 2), new Polygon(...)]`                       |
-| `language`    | Map localization.                                                                                    | `Language::RussianRussia`                                                                                                                              |
-| `style`       | Map styling and customization of objects’ appearance                                                 | `tags.any:poi;transit_location\|elements:label.text.fill\stylers.color:DD0000`                                                                         |                                                                                                                                                      |
-| `theme`       | Theme of the requested map image (`light` or `dark`).                                                | `Theme::Light`                                                                                                                                         |
-| `mapType`     | Predefined map style modes (`map`, `driving`, `transit`, `admin`).                                   | `MapType::Map`                                                                                                                                         |
+| Parameter     | Description                                                                                          | Example                                                                                                                             |
+|---------------|------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `point`       | Longitude and latitude of the map center in degrees.                                                 | `new Point(longitude: 32.810152, latitude: 39.889847)`                                                                              |
+| `boundingBox` | Alternative method for setting the map viewport. Defined as lower-left and upper-right coordinates.  | `new BoundingBox(new Point(...), new Point(...))`                                                                                   |
+| `span`        | Range of the map viewport by longitude and latitude (in degrees).                                    | `->span(10)`                                                                                                                        |
+| `zoom`        | Map zoom level (0–21).                                                                               | `->zoom(10)`                                                                                                                        |
+| `size`        | Height and width of the requested map image (in pixels).                                             | `new Size(width: 650, height: 450)`                                                                                                 |
+| `scale`       | Coefficient for scaling map objects. Fractional values from 1.0 to 4.0.                              | `->scale(1)`                                                                                                                        |
+| `placemarks`  | Definitions of one or more markers, including coordinates, style, color, size, and optional content. | `[new Placemark(new Point(...), style: PlacemarkStyle::Pm, color: PlacemarkColor::Pink, size: PlacemarkSize::Large, content: 100)]` |
+| `figures`     | Geometric figures (polylines and polygons) with coordinates, line color/thickness, and fill color.   | `[new Line(coordinates: [...], lineColor: '00FF00A0', lineWidth: 1, borderColor: '00FF00A0', borderWidth: 2), new Polygon(...)]`    |
+| `language`    | Map localization.                                                                                    | `Language::RussianRussia`                                                                                                           |
+| `style`       | Map styling and customization of objects’ appearance                                                 | `tags.any:poi;transit_location\|elements:label.text.fill\stylers.color:DD0000`                                                      |                                                                                                                                                      |
+| `theme`       | Theme of the requested map image (`light` or `dark`).                                                | `Theme::Light`                                                                                                                      |
+| `mapType`     | Predefined map style modes (`map`, `driving`, `transit`, `admin`).                                   | `MapType::Map`                                                                                                                      |
 
 ## Testing
 

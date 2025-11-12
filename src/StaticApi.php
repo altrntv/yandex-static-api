@@ -24,6 +24,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Illuminate\Support\Uri;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class StaticApi
@@ -42,6 +43,8 @@ class StaticApi
 
     protected string $apiKey;
 
+    protected string $url;
+
     protected PendingRequest $pendingRequest;
 
     protected Point $point;
@@ -50,11 +53,13 @@ class StaticApi
     {
         $this->apiKey = Config::string('yandex-static-api.api_key');
 
+        $this->url = Config::string('yandex-static-api.url');
+
         $this->pendingRequest = Http::createPendingRequest()
             ->timeout(60)
             ->asJson()
             ->accept('image/png')
-            ->baseUrl(Config::string('yandex-static-api.url'));
+            ->baseUrl($this->url);
 
         $this->point = $point;
     }
@@ -67,11 +72,11 @@ class StaticApi
     /**
      * @throws YandexStaticApiException
      */
-    public function sendRequest(): Image
+    public function fetch(): Image
     {
         try {
             $response = $this->pendingRequest
-                ->get('v1', $this->toQueryParam());
+                ->get('v1', $this->queryParam());
         } catch (ConnectionException $exception) {
             throw new YandexStaticApiConnectionException($exception->getMessage(), $exception->getCode());
         }
@@ -83,6 +88,21 @@ class StaticApi
             mimeType: $response->header('Content-Type'),
             size: (int)$response->header('Content-Length'),
         );
+    }
+
+    public function url(): string
+    {
+        return URI::to($this->url)
+            ->withPath('v1')
+            ->withQuery($this->queryParam());
+    }
+
+    public function decoderUrl(): string
+    {
+        return URI::to($this->url)
+            ->withPath('v1')
+            ->withQuery($this->queryParam())
+            ->decode();
     }
 
     /**
@@ -106,7 +126,7 @@ class StaticApi
     /**
      * @return array<string, string>
      */
-    private function toQueryParam(): array
+    private function queryParam(): array
     {
         return array_filter([
             'apikey' => $this->apiKey,
