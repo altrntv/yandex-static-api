@@ -1,0 +1,57 @@
+{
+    "name": "altrntv/yandex-static-api",
+    "description": "Yandex Static API for Laravel.",
+    "keywords": [
+        "laravel",
+        "yandex",
+        "yandex-static-api"
+    ],
+    "homepage": "https://github.com/altrntv/yandex-static-api",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pavel Dykin",
+            "email": "sssecularization@gmail.com",
+            "homepage": "https://github.com/altrntv"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^12.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.25",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "orchestra/testbench": "^10.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Altrntv\\YandexStaticApi\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Altrntv\\YandexStaticApi\\StaticApiProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "pint": "vendor/bin/pint"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
